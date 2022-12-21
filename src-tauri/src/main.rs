@@ -47,11 +47,25 @@ fn main() {
                 ..
             } => {
                 println!("system tray received a double click");
+                let window = app.get_window("main");
+                match window {
+                    Some(window) => match window.is_visible().expect("winVisible") {
+                        true => {
+                            // window.hide().expect("winHide");
+                            return;
+                        }
+                        false => {
+                            window.show().expect("winShow");
+                        },
+                    },
+                    None => return,
+                };
             }
             SystemTrayEvent::MenuItemClick { id, .. } => {
                 let item_handle = app.tray_handle().get_item(&id);
                 match id.as_str() {
                     "hide" => {
+                        println!("system tray received a hide click");
                         let window = app.get_window("main");
                         match window {
                             Some(window) => match window.is_visible().expect("winVisible") {
@@ -69,6 +83,7 @@ fn main() {
                         };
                     }
                     "quit" => {
+                        println!("system tray received a quit click");
                         std::process::exit(0);
                     }
                     _ => {}
