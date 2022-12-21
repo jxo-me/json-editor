@@ -42,13 +42,13 @@ const handleRenderMenu = (mode: any, items: any[]) => {
   const customCopyButton = {
     onClick: handleCopy,
     icon: faCopy,
-    title: '将文档复制到剪贴板',
+    title: 'Copy document to clipboard',
     className: 'custom-copy-button'
   }
   const customTrashButton = {
     onClick: handleTrash,
     icon: faTrashCan,
-    title: '清空内容',
+    title: 'clear content',
     className: 'custom-copy-button'
   }
   const space = {
