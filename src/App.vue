@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import {ref} from 'vue';
+import { faCopy, faTrashCan } from '@fortawesome/free-regular-svg-icons'
+import copyToClipboard from './utils/copyToClipboard'
 
 import type {QueryLanguageId} from 'vue3-ts-jsoneditor'
 
@@ -18,6 +20,43 @@ const onFocus = () => {
 const onBlur = () => {
   //
 }
+const handleCopy = () => {
+  console.log('Custom copy button clicked')
+  const contents = JSON.stringify(jsonData.value, null, 2)
+  console.log('contents:', contents)
+  copyToClipboard(contents)
+}
+
+const handleTrash = () => {
+  console.log('Custom trash button clicked')
+  console.log('value:', jsonData.value)
+  // jsonData.value = {}
+}
+
+const handleRenderMenu = (mode: any, items: any[]) => {
+  const separator = {
+    separator: true
+  }
+  console.log('mode:', mode)
+  console.log('items:', items)
+  const customCopyButton = {
+    onClick: handleCopy,
+    icon: faCopy,
+    title: '将文档复制到剪贴板',
+    className: 'custom-copy-button'
+  }
+  const customTrashButton = {
+    onClick: handleTrash,
+    icon: faTrashCan,
+    title: '清空内容',
+    className: 'custom-copy-button'
+  }
+  const space = {
+    space: true
+  }
+  const itemsWithoutSpace = items.slice(0, items.length - 1)
+  return itemsWithoutSpace.concat([separator, customCopyButton, customTrashButton, space])
+}
 </script>
 
 <template>
@@ -29,6 +68,7 @@ const onBlur = () => {
       @focus="onFocus"
       @blur="onBlur"
       class="awesome-json-editor vue-ts-json-editor--max-box"
+      :on-render-menu="handleRenderMenu"
   />
 </template>
 
